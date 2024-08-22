@@ -39,6 +39,10 @@ What if we could build more tools to analyse multilateral negotiations on top of
 	•	statements_distribution.py: Visualizes the distribution of statements across various categories.
 	•	statements_distribution.r: R script for analyzing the distribution of statements.
 	•	region_distribution_graph.r: Generates regional distribution graphs.
+	•	text_tidier.r: organizes statements to extract most common words.
+	•	word_frequency.r: generates list of most 50 most frequent words.
+	•	words_parser.py: removes duplicates from most frequent words list.
+	•	word_cloud_gen.r: generate word cloud from parsed most frequent words list.
 
 ## Contributing
 
