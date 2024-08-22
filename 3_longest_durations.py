@@ -5,6 +5,12 @@ def duration_to_seconds(duration):
     h, m, s = map(int, duration.split(':'))
     return h * 3600 + m * 60 + s
 
+def seconds_to_hhmmss(total_seconds):
+    h = total_seconds // 3600
+    m = (total_seconds % 3600) // 60
+    s = total_seconds % 60
+    return f"{h:02}:{m:02}:{s:02}"
+
 def process_speaker_data(directory):
     speaker_data = {}
     total_speaking_time_all = 0
@@ -40,15 +46,19 @@ def filter_and_calculate_percentage(speaker_data, total_speaking_time_all, min_s
 
     total_high_freq_time = result_df['total_time'].sum()
     percentage_high_freq = (total_high_freq_time / total_speaking_time_all) * 100
+
+    # Convert total speaking time from seconds to hh:mm:ss format
+    total_time_hhmmss = seconds_to_hhmmss(total_high_freq_time)
     
-    return percentage_high_freq
+    return percentage_high_freq, total_time_hhmmss
 
 def main():
     output_dir = './srcs/'
     speaker_data, total_speaking_time_all = process_speaker_data(output_dir)
-    percentage_high_freq = filter_and_calculate_percentage(speaker_data, total_speaking_time_all)
+    percentage_high_freq, total_time_hhmmss = filter_and_calculate_percentage(speaker_data, total_speaking_time_all)
 
     print(f"Percentage of total speaking time by high-frequency speakers: {percentage_high_freq:.2f}%")
+    print(f"Total speaking time by high-frequency speakers: {total_time_hhmmss}")
 
 if __name__ == "__main__":
     main()
