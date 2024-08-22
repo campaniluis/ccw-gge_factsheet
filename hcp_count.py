@@ -1,17 +1,21 @@
 import pandas as pd
 import os
 
-output_dir = './srcs/'
+def count_hcp_not_spoken(directory='./srcs/', total_hcp=127):
+    n_hcp_spoke = set()
 
-# Initialize a set to store unique high contracting parties
-high_contracting_parties = set()
+    for file in os.listdir(directory):
+        if file.endswith('.csv'):
+            df = pd.read_csv(os.path.join(directory, file))
+            if {'Speaker', 'High Contracting Party'}.issubset(df.columns):
+                n_hcp_spoke.update(df[df['High Contracting Party'] == 'Yes']['Speaker'])
 
-# Read and process each CSV file in the directory
-for file in os.listdir(output_dir):
-    if file.endswith('.csv'):
-        df = pd.read_csv(os.path.join(output_dir, file))
-        # Update the set with unique speakers if the 'Speaker' column exists
-        high_contracting_parties.update(df.get('Speaker', []))
+    return total_hcp - len(n_hcp_spoke)
 
-# Print the number of unique high contracting parties
-print(f"Number of High Contracting Parties: {len(high_contracting_parties)}")
+def main():
+    n_hcp_silent = count_hcp_not_spoken()
+    print(f"Number of High Contracting Parties with No Statements Delivered: {n_hcp_silent}")
+
+
+if __name__ == "__main__":
+    main()
