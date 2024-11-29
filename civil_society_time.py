@@ -24,26 +24,28 @@ def calculate_no_high_contracting_party_time(directory):
     for file in os.listdir(directory):
         if file.endswith('.csv'):
             df = pd.read_csv(os.path.join(directory, file))
-            if {'High Contracting Party', 'Duration', 'Speaker'}.issubset(df.columns):
+            if {'Delegation Status', 'Duration', 'Speaker'}.issubset(df.columns):
                 df['Duration_in_Seconds'] = df['Duration'].apply(duration_to_seconds)
                 total_time += df['Duration_in_Seconds'].sum()
                 
                 filtered_df = df[
-                    (df['High Contracting Party'] == 'No') & 
+                    (df['Delegation Status'] == 'Not a HCP') & 
                     (~df['Speaker'].isin(exclude_speakers))
                 ]
                 time_civil_society += filtered_df['Duration_in_Seconds'].sum()
                 organizations_included.update(filtered_df['Speaker'].unique())
     
     percentage_civil_society = (time_civil_society / total_time) * 100 if total_time else 0
-    return seconds_to_hhmmss(time_civil_society), percentage_civil_society, sorted(organizations_included)
+    return seconds_to_hhmmss(time_civil_society), percentage_civil_society, seconds_to_hhmmss(total_time), sorted(organizations_included)
 
 def main():
     output_dir = './srcs/'
-    time_civil_society, percentage_civil_society = calculate_no_high_contracting_party_time(output_dir)
+    time_civil_society, percentage_civil_society, total_time, organizations_included = calculate_no_high_contracting_party_time(output_dir)
     
     print(f"Total time for Civil Society: {time_civil_society}")
     print(f"Percentage of total time: {percentage_civil_society:.2f}%")
+    print(f"Total time: {total_time}")
+    print(f"Organizations included: {', '.join(organizations_included)}")
 
 if __name__ == "__main__":
     main()

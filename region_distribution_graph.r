@@ -40,7 +40,7 @@ jpeg("region_distribution.jpg", width = 1000, height = 800, res = 150)
 
 # Create a more attractive bar plot
 ggplot(region_counts, aes(x = Region, y = Count)) +
-  geom_bar(stat = "identity", fill = "#ffcd38", color = "#555555") +
+  geom_bar(stat = "identity", fill = "#d14334", color = "#555555") +
   theme_minimal(base_family = "open_sans") +
   theme(
     plot.title = element_text(size = 20, face = "bold", color = "#333333"),

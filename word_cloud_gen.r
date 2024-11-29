@@ -11,7 +11,7 @@ showtext_auto()
 font_add_google("Poppins", "poppins")
 
 # Read the CSV file
-df <- read.csv("consolidated_top_50_words.csv")
+df <- read.csv("top_50_words.csv")
 
 # Convert all words to uppercase
 df$word <- toupper(df$word)
@@ -24,7 +24,7 @@ colors <- c("#4a77a8")
 
 # Create the word cloud with bold Poppins font and a rectangular appearance
 wordcloud <- ggplot(df, aes(label = word, size = percentage)) +
-  geom_text_wordcloud_area(eccentricity = 4, # Adjust eccentricity for a more rectangular shape
+  geom_text_wordcloud_area(eccentricity = 1, # Adjust eccentricity for a more rectangular shape
                            color = sample(colors, nrow(df), replace = TRUE),
                            family = "poppins",
                            fontface = "bold",

@@ -16,10 +16,10 @@ process_csv <- function(file) {
     df <- read_csv(file, col_types = cols(.default = col_character()))
     
     processed <- df %>%
-      select(Speaker, `High Contracting Party`) %>%
+      select(Speaker, `Delegation Status`) %>%
       mutate(across(everything(), as.character)) %>%
-      mutate(`High Contracting Party` = ifelse(`High Contracting Party` == "Yes", Speaker, NA_character_)) %>%
-      filter(!is.na(`High Contracting Party`))
+      mutate(`Delegation Status` = ifelse(`Delegation Status` == "High Contracting Party", Speaker, NA_character_)) %>%
+      filter(!is.na(`Delegation Status`))
     
     return(processed)
   }, error = function(e) {
@@ -38,9 +38,9 @@ processed_data <- compact(processed_data)
 # Combine all processed dataframes
 all_data <- bind_rows(processed_data)
 
-# Count statements per high contracting party
+# Count statements per Delegation Status
 statement_counts <- all_data %>%
-  group_by(`High Contracting Party`) %>%
+  group_by(`Delegation Status`) %>%
   summarise(Count = n()) %>%
   ungroup() %>%
   arrange(desc(Count))
